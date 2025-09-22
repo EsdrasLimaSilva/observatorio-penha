@@ -4,13 +4,14 @@ import CloseMenuIcon from "@/assets/close-menu-icon.svg";
 import { useState } from "react";
 import { tv } from "tailwind-variants";
 import { useNavigate } from "react-router";
+import { useLocation } from "@/hooks/useLocation";
 
 const headerStyle = tv({
-    base: "w-full bg-background flex flex-col items-center justify-center px-4 fixed top-0 left-0 z-100 h-fit py-4",
+    base: "w-full bg-background flex flex-col items-center justify-center px-4 fixed top-0 left-0 z-100 h-fit py-4 md:flex-row md:px-[10vw]",
 });
 
 const menuStyle = tv({
-    base: "flex flex-col gap-3 text-text items-center mt-0 h-0 overflow-hidden transition-all",
+    base: "flex flex-col gap-3 text-text items-center mt-0 h-0 overflow-hidden transition-all  md:h-[80px] md:flex-row md:gap-8 md:w-full md:justify-end",
     variants: {
         menuVisible: {
             true: "h-[80px] mt-6",
@@ -18,9 +19,14 @@ const menuStyle = tv({
     },
 });
 
+const listItemStyle = tv({
+    base: "hover:underline py-1 cursor-pointer h-full flex items-center justify-center",
+});
+
 export function Header() {
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const navigate = useNavigate();
+    const { getPosition } = useLocation();
 
     return (
         <div className={headerStyle()}>
@@ -31,7 +37,10 @@ export function Header() {
                     onClick={() => navigate("/")}
                 />
 
-                <button onClick={() => setIsMenuVisible((prev) => !prev)}>
+                <button
+                    onClick={() => setIsMenuVisible((prev) => !prev)}
+                    className="md:hidden"
+                >
                     <img
                         src={isMenuVisible ? CloseMenuIcon : MenuIcon}
                         className="h-[36px]"
@@ -40,8 +49,21 @@ export function Header() {
             </div>
 
             <ul className={menuStyle({ menuVisible: isMenuVisible })}>
-                <li onClick={() => navigate("/")}>minha localização</li>
-                <li onClick={() => navigate("/como-usar")}>como usar</li>
+                <li
+                    onClick={() => {
+                        navigate("/");
+                        getPosition();
+                    }}
+                    className={listItemStyle()}
+                >
+                    minha localização
+                </li>
+                <li
+                    onClick={() => navigate("/como-usar")}
+                    className={listItemStyle()}
+                >
+                    como usar
+                </li>
             </ul>
         </div>
     );
