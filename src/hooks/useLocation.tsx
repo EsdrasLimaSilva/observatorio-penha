@@ -1,9 +1,10 @@
 import { useAppState } from "@/state/useApp";
+import type { LatLng } from "leaflet";
 
 export const LOCATION_KEY = "@location";
 
 export function useLocation() {
-    const { position, updateAppState } = useAppState();
+    const { position, newEventPosition, updateAppState } = useAppState();
 
     function getPosition() {
         if ("geolocation" in navigator) {
@@ -33,5 +34,21 @@ export function useLocation() {
         updateAppState({ position });
     }
 
-    return { position, getPosition, getLocalStoragePosition, updatePosition };
+    function updateNewEventPosition(newEventPosition: LatLng) {
+        updateAppState({ newEventPosition });
+    }
+
+    function resetNewEventPosition() {
+        updateAppState({ newEventPosition: undefined });
+    }
+
+    return {
+        newEventPosition,
+        position,
+        getPosition,
+        getLocalStoragePosition,
+        updatePosition,
+        updateNewEventPosition,
+        resetNewEventPosition,
+    };
 }

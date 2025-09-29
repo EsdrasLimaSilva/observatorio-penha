@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import { useLocation } from "@/hooks/useLocation";
 
 const headerStyle = tv({
-    base: "w-full bg-background flex flex-col items-center justify-center px-4 fixed top-0 left-0 z-100 h-fit py-4 md:flex-row md:px-[10vw]",
+    base: "w-full bg-background flex flex-col items-center justify-center px-4 fixed top-0 left-0 z-10 h-fit py-4 md:flex-row md:px-[10vw]",
 });
 
 const menuStyle = tv({
